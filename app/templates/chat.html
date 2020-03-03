@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>{{ room }}</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/raleway.css') }}" type="text/css" ></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}"></script>
+
+        <style>
+         form { padding: 3px; position: fixed; bottom: 0; width: 100%; }
+         form input {background: #eee; border: 10px; padding: 10px; width: 60%; margin-right: .5%; }
+         /* form button { width: 9%; border: none; padding: 10px; } */
+         #messages { list-style-type: none; margin: 0; padding: 0; }
+         #messages li { padding: 5px 10px; }
+         #messages li:nth-child(odd) { background: #eee; }
+         #messages { margin-bottom: 40px }
+        </style>
+
+        <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script>
+        var socket;
+        $(document).ready(function(){
+             var socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+             socket.on('connect', function() {
+                 socket.emit('joined', {});
+             });
+             socket.on('status', function(data) {
+                 console.log(data);
+                 $('#messages').append($('<li>').text( '< ' + data.msg + ' >\n'));
+                 window.scrollTo(0, document.body.scrollHeight);
+             });
+
+             $('form').submit(function(){
+                 text = $('#m').val();
+                 socket.emit('text', {msg: text} );
+                 $('#m').val('');
+                 return false;
+             });
+             socket.on('message', function(data){
+                 $('#messages').append($('<li>').text(data.msg));
+                 window.scrollTo(0, document.body.scrollHeight);
+             });
+         });
+         function leave_room() {
+             socket.emit('left', {}, function() {
+                 socket.disconnect();
+                 window.location.href = "{{ url_for('main.index') }}";
+             });
+         }
+        </script>
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <ul id="messages"></ul>
+            </div>
+            <div class="row">
+                <form action="">
+                    <input id="m" autocomplete="off" />
+                    <button>Send</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

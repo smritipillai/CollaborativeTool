@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>App</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/raleway.css') }}" type="text/css" ></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+        <div class="one-half column">
+        <h1>Join ChatRoom</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.name.label }}: {{ form.name() }} {% for error in form.name.errors %}{{ error }}{% endfor %}<br>
+            {{ form.room.label }}: {{ form.room() }} {% for error in form.room.errors %}{{ error }}{% endfor %}<br>
+            {{ form.submit() }}
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
