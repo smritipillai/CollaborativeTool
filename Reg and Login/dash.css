@@ -1,0 +1,24 @@
+.img {
+    border-radius: 50%;
+}
+
+.btn {
+    background-color: dodgerblue;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    /* float: right;
+    margin-left: 20 px; */
+    text-align: right;
+}
+/* .log {
+    float: left;
+    text-align: right;
+    position: relative;
+    border-radius: 50%;
+} */
+
+.btn:hover {
+    background-color: royalblue;
+}
+
