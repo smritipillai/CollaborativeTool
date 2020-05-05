@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Square</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/raleway.css') }}" type="text/css" ></script>
+    <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<style>
+  body {
+      background-color: #161525;
+      color:#BDBDBD;
+      font-family: "raleway"
+  }
+
+  .main {
+      padding: 40px;
+  }
+  .container {
+      display: flex;
+  }
+  .side-bar {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      height: 100%;
+      height: 80vh;
+  }
+
+  .message-box {
+      display:flex;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: scroll;
+      margin: 10px;
+  }
+
+  .message-box form button {
+      height: 40px;
+      background-color:#171C32 ;
+      color:#4C74F2;
+      text-align: center;
+      border: 0;
+      padding-right: 15px;
+      padding-left: 15px;
+  }
+
+  #channel-list,
+  #user-list {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%
+  }
+
+  .user-list ul li, 
+  .channel-list ul li {
+      margin-bottom: 5px;
+      margin-top: 5px;
+
+  }
+
+  .user-list ul li a, 
+  .channel-list ul li a {
+      text-decoration: none;
+      color: #BDBDBD;
+  }
+
+  .user-list ul li a:hover, 
+  .channel-list ul li a:hover {
+      color: #4C74F2;;
+  }
+
+  .channel-list form input {background: #1E1D30;; border: 10px; padding: 10px; color: #BDBDBD}
+
+  .message-box form { padding: 3px; position: fixed; bottom: 0; width: 100%; }
+  .message-box form input {background: #1E1D30;; border: 10px; padding: 10px; width: 80%; margin-right: .5%; color: #BDBDBD}
+  /* form button { width: 9%; border: none; padding: 10px; } */
+  #messages { list-style-type: none; margin: 0; padding: 0; width: 100% }
+  #messages li { padding: 5px 10px; }
+  #messages li:nth-child(odd) { background: #1E1D30; }
+  #messages { margin-bottom: 40px }
+
+</style>
+</head>
+
+<body>
+  <div class="main container">
+    <div class="side-bar">
+      <div class="channel-list">
+        <h3> Channels </h3>
+          <form class="container" style="margin:20px auto" id="create-channel">
+            <div style="container">
+              <input type="text" id="channel-name" name="channel-name">
+            </div>
+            <div style="container">
+              <input type="submit" value="+">
+            </div>
+          </form>
+        <ul id="channel-list">
+        </ul>
+
+        <h3> Users </h3>
+        <ul id="user-list"></ul>
+      </div>
+    </div>
+    <div class="message-box" id="message-box">
+      <ul id="messages"></ul>
+      <form id="message-form" action="">
+        <input id="message" autocomplete="off" />
+        <button>Send</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+  var socket
+  var channelName
+  const user = "{{ user }}"
+  $(document).ready(function(){
+      socket = io.connect('http://' + document.domain + ':' + location.port )
+      join_channel("public")
+
+      socket.on('connect', function() {
+          socket.emit('join', {})
+      });
+
+      socket.on('message', function(data){
+          console.log(data)
+          $('#messages').append($('<li>').text(data.user + " : " + data.message))
+          var chatHistory = document.getElementById("message-box")
+          chatHistory.scrollTop = chatHistory.scrollHeight
+      });
+
+      socket.on('load-message', function(data){
+          var elem = document.getElementById('messages');
+          for (var i = elem.childNodes.length-1 ;i >= 0; i-- ) {
+              elem.removeChild(elem.childNodes[i])
+          }
+
+          for (var i = 0; i < data.length; i++) {
+              var li = document.createElement('li');
+              li.innerHTML = data[i]["user"]  + " : " + data[i]["message"];
+              elem.appendChild(li)
+          }
+          
+      });
+      
+      socket.on('channel-list', function(data){
+          addChannelList('channel-list',data)
+      });
+
+      socket.on('user-list', function(data){
+          addChannelList('user-list',data,true)
+      });
+
+  });
+
+  function addChannelList(id,data,u=false) {
+      var elem = document.getElementById(id)
+      for (var i = elem.childNodes.length-1 ;i >= 0; i-- ) {
+          elem.removeChild(elem.childNodes[i])
+      }
+
+      for (var i = 0; i < data.length; i++) {
+          var a = document.createElement('a');
+          a.setAttribute('href',"javascript:void(0);")
+          if (u){
+              a.setAttribute('onclick',"join_channel(\""+data[i] + ":" + user +"\")")
+              a.innerHTML = data[i]
+          }else {
+            a.setAttribute('onclick',"join_channel(\""+data[i]+"\")")
+            a.innerHTML = "#" + data[i]
+          }
+          var li = document.createElement('li')
+          li.appendChild(a)
+          elem.appendChild(li)
+      }
+  }
+
+  const messageForm = document.getElementById( "message-form" );
+
+  messageForm.addEventListener( "submit", function ( event ) {
+      event.preventDefault();
+      text = $('#message').val();
+      console.log(text)
+      socket.emit('message', {message: text, channelName: channelName});
+      $('#message').val('');
+      return false;
+  });
+  
+  const createChannel = document.getElementById( "create-channel" );
+
+  createChannel.addEventListener( "submit", function ( event ) {
+      event.preventDefault();
+      text = $('#channel-name').val();
+      console.log(text)
+      socket.emit('create-channel', {channelName: text} );
+      $('#channel-name').val('');
+      return false;
+  });
+
+    function join_channel(channel) {
+        channelName = channel;
+        socket.emit('join-channel', {channelName: channel });
+    }
+  
+  </script>
+</body>
+</html>

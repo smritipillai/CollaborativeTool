@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Square</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/raleway.css') }}" type="text/css" ></script>
+<style>
+
+  body {
+      background-color: #161525;
+      color:#BDBDBD;
+      font-family: "raleway"
+  }
+
+  .box {
+      margin-top: 40vh;
+      margin-left: 40vw;
+  }
+  .container {
+      display: flex;
+      justify-content: space-between;
+  }
+
+  .form {
+      display: flex;
+      width: 250px;
+      flex-direction: column;
+  }
+
+  .form-right {
+      display: flex;
+      justify-content: flex-end;
+  }
+
+  .form-left {
+      display: flex;
+      justify-content: flex-start;
+  }
+
+  form button {
+      height: 40px;
+      background-color:#171C32 ;
+      color:#4C74F2;
+      text-align: center;
+      border: 0;
+      margin-top: 10px;
+      padding-right: 15px;
+      padding-left: 15px;
+  }
+
+</style>
+</head>
+<body>
+  <div class="box">
+    <div class="container" style="flex-direction: column">
+      <!-- <h1>Join Server: {{ server_name }}</h1> -->
+      <form method="post" class="form">
+        <div class="container">
+          <div class="form-left">
+            <label for="server-name">Server Name</label>
+          </div>
+          <div class="form-right">
+            <input type="text" name="server-name"><br>
+          </div>
+        </div>
+        <div class="container">
+          <div class="form-left">
+            <label for="user-name">User Name</label>
+          </div>
+          <div class="form-right">
+            <input type="text" name="user-name"><br>
+          </div>
+        </div>
+        <div class="container">
+          <div class="form-left">
+            <label for="user-key">Password</label>
+          </div>
+          <div class="form-right">
+            <input type="password" name="user-key"><br>
+          </div>
+        </div>
+        <button>Join</button>
+      </form>
+    </div>
+</body>
+</html>
