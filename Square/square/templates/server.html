@@ -33,7 +33,7 @@
   .message-box {
       display:flex;
       width: 100%;
-      max-height: 90vh;
+      max-height: 85vh;
       overflow-y: scroll;
       margin: 10px;
   }
@@ -44,8 +44,6 @@
       color:#4C74F2;
       text-align: center;
       border: 0;
-      padding-right: 15px;
-      padding-left: 15px;
   }
 
   #channel-list,
@@ -64,20 +62,34 @@
   }
 
   .user-list ul li a, 
-  .channel-list ul li a {
+  .channel-list ul li a, 
+  .message-box ul li a {
       text-decoration: none;
       color: #BDBDBD;
   }
 
   .user-list ul li a:hover, 
-  .channel-list ul li a:hover {
+  .channel-list ul li a:hover,
+  .message-box ul li a:hover {
       color: #4C74F2;;
   }
 
+  input[type="file"] {
+      display: none;
+  }
+  .custom-file-upload {
+      border: 0px;
+      background-color:#171C32 ;
+      color:#4C74F2;
+      display: inline-block;
+      padding: 6px 12px;
+      cursor: pointer;
+      width: 100px;
+  }
   .channel-list form input {background: #1E1D30;; border: 10px; padding: 10px; color: #BDBDBD}
 
-  .message-box form { padding: 3px; position: fixed; bottom: 0; width: 100%; }
-  .message-box form input {background: #1E1D30;; border: 10px; padding: 10px; width: 80%; margin-right: .5%; color: #BDBDBD}
+  .messages-input { padding: 3px; position: fixed; bottom: 0; width: 80vw; display:flex; justify-content: space-between }
+  .messages-input input {background: #1E1D30;; border: 10px; padding: 10px; width: 100%; margin-right: .5%; color: #BDBDBD}
   /* form button { width: 9%; border: none; padding: 10px; } */
   #messages { list-style-type: none; margin: 0; padding: 0; width: 100% }
   #messages li { padding: 5px 10px; }
@@ -109,10 +121,19 @@
     </div>
     <div class="message-box" id="message-box">
       <ul id="messages"></ul>
-      <form id="message-form" action="">
-        <input id="message" autocomplete="off" />
-        <button>Send</button>
-      </form>
+      <div class="messages-input">
+        <form id="message-form" style="width:100%;" action="">
+          <input id="message" autocomplete="off" />
+          <input type="submit" style="visibility: hidden;" />
+        </form>
+        <form action="/uploader" method="POST"
+              enctype="multipart/form-data">
+          <label for="file-upload" class="custom-file-upload">
+            Upload File
+          </label>
+          <input id="file-upload" type="file" name="file" onchange="javascript:this.form.submit();"/>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -123,7 +144,6 @@
   $(document).ready(function(){
       socket = io.connect('http://' + document.domain + ':' + location.port )
       join_channel("public")
-
       socket.on('connect', function() {
           socket.emit('join', {})
       });
