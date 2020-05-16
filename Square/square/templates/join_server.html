@@ -5,19 +5,23 @@
   <title>Square</title>
   <meta name="description" content="">
   <meta name="author" content="">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/raleway.css') }}" type="text/css" ></script>
 <style>
 
   body {
-      background-color: #161525;
+      background-image: url("./images/image.jpeg"), radial-gradient(#00344e, #032547, #000033);
+      height: 600px;
+      background-repeat: no-repeat repeat;
+      /* background-color: #161525; */
       color:#BDBDBD;
       font-family: "raleway"
   }
 
   .box {
       margin-top: 40vh;
-      margin-left: 40vw;
+      margin-left: 35vw;
   }
   .container {
       display: flex;
@@ -33,48 +37,62 @@
   .form-right {
       display: flex;
       justify-content: flex-end;
+      padding: 12px 20px;
   }
 
   .form-left {
       display: flex;
       justify-content: flex-start;
+      padding: 12px 20px;
   }
 
   form button {
-      height: 40px;
-      background-color:#171C32 ;
-      color:#4C74F2;
-      text-align: center;
-      border: 0;
-      margin-top: 10px;
-      padding-right: 15px;
-      padding-left: 15px;
+    display: inline-block;
+    padding: 7px 30px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #000033;
+    border: none;
+    border-radius: 15px;
+    margin-top: 10px;
+    margin-left: 160px;
   }
+  form button:hover {background-color: #000066}
 
 </style>
 </head>
 <body>
+  <nav class="navbar navbar-dark" style="background-color: #0f0f30;">
+    <a class="navbar-brand" href="#">
+      <img src= "./images/square.png" width="30" height="30" lass="d-inline-block align-top" alt="" loading="lazy" style="color: #000033;">
+      Welcome to Square!
+    </a>
+  </nav>
   <div class="box">
     <div class="container" style="flex-direction: column">
       <!-- <h1>Join Server: {{ server_name }}</h1> -->
       <form method="post" class="form">
         <div class="container">
           <div class="form-left">
-            <label for="user-name">User Name</label>
+            <label for="user-name" style="margin-top: 0px;">User Name</label>
           </div>
-          <div class="form-right">
-            <input type="text" name="user-name"><br>
+          <div class="form-right" style="padding-left: 37px;">
+            <input type="text"  style="height: 20px;" user-name"><br>
           </div>
         </div>
         <div class="container">
           <div class="form-left">
             <label for="user-key">Password</label>
           </div>
-          <div class="form-right">
+          <div class="form-right" style="padding-left: 10px;">
             <input type="password" name="user-key"><br>
           </div>
         </div>
-        <button>Join</button>
+        <button style="width: 90px; font-size: 15px;">Join</button>
       </form>
     </div>
 </body>

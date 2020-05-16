@@ -11,9 +11,12 @@
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 <style>
   body {
-      background-color: #161525;
+      /* background-color: #161525; */
+      background-image: url("./images/image.jpeg"), radial-gradient(#00344e, #032547, #000033);
+      height: 600px;
+      background-repeat: no-repeat repeat;
       color:#BDBDBD;
-      font-family: "raleway"
+      font-family: "raleway";
   }
 
   .main {
@@ -27,7 +30,7 @@
       flex-direction: column;
       padding: 20px;
       height: 100%;
-      height: 80vh;
+      height: 80vh;;
   }
 
   .message-box {
@@ -35,7 +38,7 @@
       width: 100%;
       max-height: 85vh;
       overflow-y: scroll;
-      margin: 10px;
+      margin: 50px;
   }
 
   .message-box form button {
@@ -82,11 +85,11 @@
       background-color:#171C32 ;
       color:#4C74F2;
       display: inline-block;
-      padding: 6px 12px;
+      padding: 10px 12px;
       cursor: pointer;
       width: 100px;
   }
-  .channel-list form input {background: #1E1D30;; border: 10px; padding: 10px; color: #BDBDBD}
+  .channel-list form input {background: #1E1D30;; border: 10px; padding: 20px; color: #BDBDBD}
 
   .messages-input { padding: 3px; position: fixed; bottom: 0; width: 80vw; display:flex; justify-content: space-between }
   .messages-input input {background: #1E1D30;; border: 10px; padding: 10px; width: 100%; margin-right: .5%; color: #BDBDBD}
@@ -114,21 +117,19 @@
           </form>
         <ul id="channel-list">
         </ul>
-
         <h3> Users </h3>
         <ul id="user-list"></ul>
       </div>
     </div>
     <div class="message-box" id="message-box">
       <ul id="messages"></ul>
-      <div class="messages-input">
-        <form id="message-form" style="width:100%;" action="">
-          <input id="message" autocomplete="off" />
-          <input type="submit" style="visibility: hidden;" />
+      <div class="messages-input" style="position:absolute; left: 150px; bottom:5px;">
+        <form id="message-form" style="width:50%; left: 100px;" action="" style="position: absolute; right: 50px;">
+          <input id="message" autocomplete="off" style="position: absolute; left: 250px; width: 800px;">
+          <input type="submit" style="visibility: hidden;">
         </form>
-        <form action="/uploader" method="POST"
-              enctype="multipart/form-data">
-          <label for="file-upload" class="custom-file-upload">
+        <form action="/uploader" method="POST" enctype="multipart/form-data">
+          <label for="file-upload" class="custom-file-upload" style="position: absolute; left:950px;"> 
             Upload File
           </label>
           <input id="file-upload" type="file" name="file" onchange="javascript:this.form.submit();"/>

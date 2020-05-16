@@ -6,12 +6,16 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/raleway.css') }}" type="text/css" ></script>
 <style>
 
   body {
-      background-color: #161525;
-      color:#BDBDBD;
+      /* background-color: #161525; */
+      background-image: url("./images/image.jpeg"), radial-gradient(#00344e, #032547, #000033);
+      height: 600px;
+      background-repeat: no-repeat repeat;
+      color:rgb(214, 203, 203);
       font-family: "raleway"
   }
 
@@ -33,6 +37,7 @@
   .form-right {
       display: flex;
       justify-content: flex-end;
+      height: 40px;
   }
 
   .form-left {
@@ -42,32 +47,41 @@
 
   form button {
       height: 40px;
-      background-color:#171C32 ;
-      color:#4C74F2;
+      background-color: #000033 ;
+      color:#fff;
       text-align: center;
       border: 0;
       margin-top: 10px;
       padding-right: 15px;
       padding-left: 15px;
+      border-radius: 15px;
+      width: 80px;
   }
+  form button:hover {background-color: #000066}
 
 </style>
 </head>
 <body>
-  <div class="box">
-    <div class="container" style="flex-direction: column">
+  <nav class="navbar navbar-dark" style="background-color: #0f0f30;">
+    <a class="navbar-brand" href="#">
+      <img src="./images/square.png" width="30" height="30" lass="d-inline-block align-top" alt="" loading="lazy" style="color: #000033;">
+      Welcome to Square!
+    </a>
+  </nav>
+  <div class="box" style="padding-bottom: 40px; position:absolute; left: -50px; top:5px;">
+    <div class="container" style="flex-direction: column;">
       <!-- <h1>Join Server: {{ server_name }}</h1> -->
       <form method="post" class="form">
-        <div class="container">
-          <div class="form-left">
+        <div class="container"> 
+          <div class="form-left" style="padding-right: 30px;">
             <label for="server-name">Server Name</label>
           </div>
           <div class="form-right">
             <input type="text" name="server-name"><br>
           </div>
         </div>
-        <div class="container">
-          <div class="form-left">
+        <div class="container" style="padding: 20px;">
+          <div class="form-left" style="padding-right: 30px;">
             <label for="user-name">User Name</label>
           </div>
           <div class="form-right">
@@ -75,14 +89,14 @@
           </div>
         </div>
         <div class="container">
-          <div class="form-left">
+          <div class="form-left" style="padding-right: 8px; padding-bottom: 17px;">
             <label for="user-key">Password</label>
           </div>
           <div class="form-right">
             <input type="password" name="user-key"><br>
           </div>
         </div>
-        <button>Join</button>
+        <button style = "position:absolute; left:200px; top:200px;">Join</button>
       </form>
     </div>
 </body>
